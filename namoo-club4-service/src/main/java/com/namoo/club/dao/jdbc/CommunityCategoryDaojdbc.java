@@ -7,12 +7,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.namoo.club.dao.CommunityCategoryDao;
 import com.namoo.club.domain.entity.Category;
 import com.namoo.club.service.logic.exception.NamooExceptionFactory;
 
+@Repository
 public class CommunityCategoryDaojdbc extends JdbcDaoTemplate implements CommunityCategoryDao {
-
+	//
+	@Autowired
+	private DataSource dataSource;
+	
 	@Override
 	public List<Category> readAllCategory(int cmId) {
 
@@ -22,7 +31,7 @@ public class CommunityCategoryDaojdbc extends JdbcDaoTemplate implements Communi
 		List<Category> categories = new ArrayList<>();
 
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT cgId, cmId, cgName FROM communitycategory WHERE cmId = ?";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -51,7 +60,7 @@ public class CommunityCategoryDaojdbc extends JdbcDaoTemplate implements Communi
 		Category category = null;
 
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT cgId, cmId, cgName FROM communitycategory WHERE cmId = ? AND cgId = ?";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -80,7 +89,7 @@ public class CommunityCategoryDaojdbc extends JdbcDaoTemplate implements Communi
 		PreparedStatement pstmt = null;
 	
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "DELETE FROM communitycategory WHERE cmId = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, cmId);
@@ -101,7 +110,7 @@ public class CommunityCategoryDaojdbc extends JdbcDaoTemplate implements Communi
 		PreparedStatement pstmt = null;
 
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "INSERT INTO communitycategory(cmId, cgName) VALUES(?,?)";
 			pstmt = conn.prepareStatement(sql);
 

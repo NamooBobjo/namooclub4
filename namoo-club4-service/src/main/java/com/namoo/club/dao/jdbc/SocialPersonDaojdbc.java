@@ -7,12 +7,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.namoo.club.dao.SocialPersonDao;
 import com.namoo.club.domain.entity.SocialPerson;
 import com.namoo.club.service.logic.exception.NamooExceptionFactory;
 
+@Repository
 public class SocialPersonDaojdbc extends JdbcDaoTemplate implements SocialPersonDao {
-
+	//
+	@Autowired
+	private DataSource dataSource;
+	
 	@Override
 	//전체 목록 조회
 	public List<SocialPerson> readAllPerson() {
@@ -23,7 +32,7 @@ public class SocialPersonDaojdbc extends JdbcDaoTemplate implements SocialPerson
 		List<SocialPerson> persons = new ArrayList<SocialPerson>();
 		
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT email, userName, password FROM socialperson";
 			pstmt = conn.prepareStatement(sql);
 			resultSet = pstmt.executeQuery();
@@ -51,7 +60,7 @@ public class SocialPersonDaojdbc extends JdbcDaoTemplate implements SocialPerson
 		SocialPerson person = null;
 		
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT email, userName, password FROM socialperson WHERE email = ? ";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -80,7 +89,7 @@ public class SocialPersonDaojdbc extends JdbcDaoTemplate implements SocialPerson
 		PreparedStatement pstmt = null;
 
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "INSERT INTO socialperson(email, userName, password) VALUES(?,?,?)";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -107,7 +116,7 @@ public class SocialPersonDaojdbc extends JdbcDaoTemplate implements SocialPerson
 		PreparedStatement pstmt = null;
 		
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "DELETE FROM socialperson WHERE email = ?";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -129,7 +138,7 @@ public class SocialPersonDaojdbc extends JdbcDaoTemplate implements SocialPerson
 		PreparedStatement pstmt = null;
 		
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "UPDATE socialperson SET  userName=?, password=? WHERE email=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, person.getName());

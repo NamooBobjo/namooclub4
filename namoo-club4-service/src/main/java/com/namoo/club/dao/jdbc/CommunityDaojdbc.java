@@ -8,14 +8,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.namoo.club.dao.CommunityDao;
 import com.namoo.club.domain.entity.Community;
 import com.namoo.club.domain.entity.CommunityManager;
 import com.namoo.club.domain.entity.SocialPerson;
 import com.namoo.club.service.logic.exception.NamooExceptionFactory;
 
+@Repository
 public class CommunityDaojdbc extends JdbcDaoTemplate implements CommunityDao {
 	//
+	@Autowired
+	private DataSource dataSource;
+	
 	@Override
 	public List<Community> readAllCommunity() {
 		//
@@ -24,7 +33,7 @@ public class CommunityDaojdbc extends JdbcDaoTemplate implements CommunityDao {
 		PreparedStatement pstmt = null;
 		List<Community> communities = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT cmid, cmName, cmDescription, cmDate FROM community";
 			communities = new ArrayList<>();
 			pstmt = conn.prepareStatement(sql);
@@ -96,7 +105,7 @@ public class CommunityDaojdbc extends JdbcDaoTemplate implements CommunityDao {
 		PreparedStatement pstmt = null;
 		List<Community> communities = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			communities = new ArrayList<>();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, email);
@@ -123,7 +132,7 @@ public class CommunityDaojdbc extends JdbcDaoTemplate implements CommunityDao {
 		PreparedStatement pstmt = null;
 		Community community = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT cmName, cmDescription, cmDate FROM community WHERE cmid = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, communityId);
@@ -153,7 +162,7 @@ public class CommunityDaojdbc extends JdbcDaoTemplate implements CommunityDao {
 		PreparedStatement pstmt = null;
 		CommunityManager communityManager = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT a.email, c.name, c.password FROM member a " + 
 					"INNER JOIN community b ON a.id = b.cmId" +
 					"INNER JOIN socialperson c ON a.email = c.email"+
@@ -188,7 +197,7 @@ public class CommunityDaojdbc extends JdbcDaoTemplate implements CommunityDao {
 		ResultSet result = null;
 		int cmId =0;
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "INSERT INTO community(cmName, cmDescription, cmDate) VALUES(?,?,sysdate())";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, community.getName());
@@ -215,7 +224,7 @@ public class CommunityDaojdbc extends JdbcDaoTemplate implements CommunityDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "DELETE FROM Community WHERE cmId = ?";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -239,7 +248,7 @@ public class CommunityDaojdbc extends JdbcDaoTemplate implements CommunityDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "UPDATE community SET cmName = ?, cmDescription = ? WHERE cmId = ?";
 			pstmt = conn.prepareStatement(sql);
 			

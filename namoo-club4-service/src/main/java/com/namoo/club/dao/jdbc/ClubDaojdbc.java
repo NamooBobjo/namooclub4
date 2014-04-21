@@ -7,6 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.namoo.club.dao.ClubDao;
 import com.namoo.club.domain.entity.Category;
 import com.namoo.club.domain.entity.Club;
@@ -14,9 +19,12 @@ import com.namoo.club.domain.entity.ClubMember;
 import com.namoo.club.domain.entity.SocialPerson;
 import com.namoo.club.service.logic.exception.NamooExceptionFactory;
 
-
+@Repository
 public class ClubDaojdbc extends JdbcDaoTemplate implements ClubDao {
-
+	//
+	@Autowired
+	private DataSource dataSource;
+	
 	@Override
 	public List<Club> readAllClub(int cmid) {
 		//
@@ -26,7 +34,7 @@ public class ClubDaojdbc extends JdbcDaoTemplate implements ClubDao {
 		List<Club> clubs = new ArrayList<>();
 		
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT a.clid, a.cmId, a.cgId, a.clName, a.clDescription, a.clDate, b.cgName FROM club a " +
 					"LEFT JOIN communityCategory b ON a.cgId = b.cgId WHERE a.cmId = ?";
 			pstmt = conn.prepareStatement(sql);
@@ -59,7 +67,7 @@ public class ClubDaojdbc extends JdbcDaoTemplate implements ClubDao {
 		Club club = null;
 
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT a.clid, a.cmId, a.cgId, a.clName, a.clDescription, a.clDate, b.cgName FROM club a " +
 						"LEFT JOIN communityCategory b ON a.cgId = b.cgId WHERE a.clid = ?";
 			pstmt = conn.prepareStatement(sql);
@@ -87,7 +95,7 @@ public class ClubDaojdbc extends JdbcDaoTemplate implements ClubDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "INSERT INTO club ( cmId, cgId, clName, clDescription, clDate) VALUES (?,?,?,?, sysdate())";
 			pstmt = conn.prepareStatement(sql);
 			
@@ -120,7 +128,7 @@ public class ClubDaojdbc extends JdbcDaoTemplate implements ClubDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "DELETE FROM club WHERE clid = ?";
 			pstmt = conn.prepareStatement(sql);
 
@@ -143,7 +151,7 @@ public class ClubDaojdbc extends JdbcDaoTemplate implements ClubDao {
 		PreparedStatement pstmt = null;
 
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "UPDATE club SET clName=?, clDescription=? WHERE clid=?";
 			pstmt = conn.prepareStatement(sql);
 
@@ -173,7 +181,7 @@ public class ClubDaojdbc extends JdbcDaoTemplate implements ClubDao {
 		Club club = null;
 
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT a.clid, a.cmId, a.cgId, a.clName, a.clDescription, a.clDate, b.cgName FROM club a " +
 						"LEFT JOIN communityCategory b ON a.cgId = b.cgId WHERE a.clName = ?";
 			pstmt = conn.prepareStatement(sql);
@@ -203,7 +211,7 @@ public class ClubDaojdbc extends JdbcDaoTemplate implements ClubDao {
 		List<Club> clubs = new ArrayList<>();
 		
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT a.clid, a.cmId, a.cgId, a.clName, a.clDescription, a.clDate, b.cgName FROM club a " +
 					"LEFT JOIN communityCategory b ON a.cgId = b.cgId";
 			pstmt = conn.prepareStatement(sql);
@@ -254,7 +262,7 @@ public class ClubDaojdbc extends JdbcDaoTemplate implements ClubDao {
 		ResultSet result= null;
 		List<ClubMember> clubmember = new ArrayList<>();
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT email, id, kind, manager, mainManager FROM member WHERE kind = 2 AND id =?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, cmId);

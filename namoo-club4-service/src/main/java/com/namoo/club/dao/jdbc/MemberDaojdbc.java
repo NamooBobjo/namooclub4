@@ -7,6 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
 import com.namoo.club.dao.MemberDao;
 import com.namoo.club.domain.entity.ClubManager;
 import com.namoo.club.domain.entity.ClubMember;
@@ -15,8 +20,12 @@ import com.namoo.club.domain.entity.CommunityMember;
 import com.namoo.club.domain.entity.SocialPerson;
 import com.namoo.club.service.logic.exception.NamooExceptionFactory;
 
+@Repository
 public class MemberDaojdbc extends JdbcDaoTemplate implements MemberDao {
-
+	//
+	@Autowired
+	private DataSource dataSource;
+	
 	@Override
 	public List<CommunityMember> readCommunityMembers(int cmId) {
 		//
@@ -26,7 +35,7 @@ public class MemberDaojdbc extends JdbcDaoTemplate implements MemberDao {
 		List<CommunityMember> communityMembers = new ArrayList<>();
 		
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT a.email, a.id, c.cmName, a.kind, b.username FROM member a " +
 					"INNER JOIN socialPerson b ON a.email = b.email " + 
 					"INNER JOIN community c ON a.id = c.cmId " + 
@@ -65,7 +74,7 @@ public class MemberDaojdbc extends JdbcDaoTemplate implements MemberDao {
 		CommunityManager communityManager = null;
 		
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT a.email, a.id, a.kind, b.username FROM member a " +
 					"INNER JOIN socialPerson b ON a.email = b.email " + 
 					"INNER JOIN community c ON a.id = c.cmId " + 
@@ -101,7 +110,7 @@ public class MemberDaojdbc extends JdbcDaoTemplate implements MemberDao {
 		CommunityMember communityMember = null;
 		
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT a.email, a.id, c.cmName, a.kind, b.username FROM member a " +
 					"INNER JOIN socialPerson b ON a.email = b.email " + 
 					"INNER JOIN community c ON a.id = c.cmId " + 
@@ -138,7 +147,7 @@ public class MemberDaojdbc extends JdbcDaoTemplate implements MemberDao {
 		List<ClubManager> managers = new ArrayList<>();
 		
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT a.email, a.id, c.clName, a.kind, b.username FROM member a " +
 					"INNER JOIN socialPerson b ON a.email = b.email " + 
 					"INNER JOIN club c ON a.id = c.clId " + 
@@ -176,7 +185,7 @@ public class MemberDaojdbc extends JdbcDaoTemplate implements MemberDao {
 		PreparedStatement pstmt = null;
 		List<ClubMember> clubMembers = new ArrayList<>();
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT a.email, a.id, c.clName, a.kind, a.mainManager, a.manager, b.username FROM member a " +
 					"INNER JOIN socialPerson b ON a.email = b.email " +
 					"INNER JOIN club c ON a.id = c.clId " +
@@ -216,7 +225,7 @@ public class MemberDaojdbc extends JdbcDaoTemplate implements MemberDao {
 		PreparedStatement pstmt = null;
 		ClubMember member = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "SELECT a.email, a.id, c.clName, a.kind, a.mainManager, a.manager, b.username FROM member a " +
 					"INNER JOIN socialPerson b ON a.email = b.email " +
 					"INNER JOIN club c ON a.id = c.clId " +
@@ -249,7 +258,7 @@ public class MemberDaojdbc extends JdbcDaoTemplate implements MemberDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "INSERT INTO member(email, id, kind, mainManager,manager) VALUES(?,?,'1',?,0)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, person.getEmail());
@@ -270,7 +279,7 @@ public class MemberDaojdbc extends JdbcDaoTemplate implements MemberDao {
 		PreparedStatement pstmt = null;
 		
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "INSERT INTO member(email, id, kind, mainManager, manager) VALUES(?,?,2,?,0)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, person.getEmail());
@@ -292,7 +301,7 @@ public class MemberDaojdbc extends JdbcDaoTemplate implements MemberDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "DELETE FROM member WHERE email = ? AND kind = '1' AND id = ?";
 			
 			pstmt = conn.prepareStatement(sql);
@@ -314,7 +323,7 @@ public class MemberDaojdbc extends JdbcDaoTemplate implements MemberDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "DELETE FROM member WHERE email = ? AND kind = 2 AND id = ?";
 			
 			pstmt = conn.prepareStatement(sql);			
@@ -337,7 +346,7 @@ public class MemberDaojdbc extends JdbcDaoTemplate implements MemberDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
-			conn = DbConnection.getConnection();
+			conn = dataSource.getConnection();
 			String sql = "UPDATE member SET manager = ? WHERE kind = 2 AND id = ? AND email = ? ";
 			pstmt = conn.prepareStatement(sql);
 			
