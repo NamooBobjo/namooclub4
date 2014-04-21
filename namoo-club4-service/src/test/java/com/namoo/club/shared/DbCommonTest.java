@@ -1,57 +1,26 @@
 package com.namoo.club.shared;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.sql.SQLException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import org.dbunit.IDatabaseTester;
-import org.dbunit.JdbcDatabaseTester;
-import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.xml.FlatXmlDataSet;
-import org.dbunit.operation.DatabaseOperation;
-import org.h2.tools.RunScript;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import com.github.springtestdbunit.DbUnitTestExecutionListener;
 
-import com.namoo.club.dao.jdbc.DbConnection;
-
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:applicationContext-test.xml")
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,
+	DirtiesContextTestExecutionListener.class,
+	TransactionalTestExecutionListener.class,
+	DbUnitTestExecutionListener.class})
 public class DbCommonTest {
 	//
-	@BeforeClass
-	public static void createSchema() throws SQLException {
+	@Test
+	public void test(){
 		//
-		DbConnection.overrideProperties("test-jdbc.properties");
-		
-		InputStream is = DbCommonTest.class.getResourceAsStream("schema.sql");
-		Reader reader = new InputStreamReader(is);
-		RunScript.execute(DbConnection.getConnection(), reader);
-	}
-	private IDatabaseTester databaseTester;
-
-	//
-	@Before
-	public void setUp() throws Exception {
-		InputStream is = this.getClass().getResourceAsStream(this.getClass().getSimpleName()+"_dataset.xml");
-		IDataSet dataset = new FlatXmlDataSet(is);
-		
-		String url = DbConnection.getUrl();
-		String username = DbConnection.getUsername();
-		String password = DbConnection.getPassword();
-		String driver= DbConnection.getDriverClassName();
-		
-		databaseTester = new JdbcDatabaseTester(driver, url, username, password);
-		databaseTester.setDataSet(dataset);
-		
-		databaseTester.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);
-		databaseTester.onSetup();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		//
-		databaseTester.setTearDownOperation(DatabaseOperation.DELETE_ALL);
-		databaseTester.onTearDown();
 	}
 }

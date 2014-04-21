@@ -5,33 +5,22 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.namoo.club.dao.factory.DaoFactory.DbType;
-import com.namoo.club.dao.jdbc.MariaDBDaoFactory;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.namoo.club.domain.entity.Category;
 import com.namoo.club.shared.DbCommonTest;
 
 public class CommunityCategoryDaoTest extends DbCommonTest {
+	//
+	private static final String DATASET_XML = "/CommunityCategoryDaoTest_dataset.xml";
 	
+	@Autowired
 	private CommunityCategoryDao dao;
 
-	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		dao = MariaDBDaoFactory.createFactory(DbType.MariaDB).getCommunityCategoryDao();
-	
-	}
-
-	@After
-	public void tearDown() throws Exception {		
-		super.tearDown();
-	}
-
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testReadAllCategory() {
 		List<Category> categories = dao.readAllCategory(1);
 		
@@ -39,18 +28,21 @@ public class CommunityCategoryDaoTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testReadCategory() {
 		Category category = dao.readCategory(1, 1);
 		assertEquals("한국요리", category.getName());
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testDeleteCategory() {
 		dao.deleteCategory(1);
 		assertNull(dao.readCategory(1, 1));
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testCreateCategory() {
 		Category category = new Category();
 		category.setName("한국요리");
@@ -59,5 +51,4 @@ public class CommunityCategoryDaoTest extends DbCommonTest {
 		assertEquals("한국요리", category.getName());
 		
 	}
-
 }

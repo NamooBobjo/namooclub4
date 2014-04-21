@@ -47,15 +47,6 @@ CREATE TABLE Member (
 	mainManager CHAR(1)     NULL      -- 대표매니저
 );
 
--- ClubMember
-ALTER TABLE Member
-	ADD CONSTRAINT PK_Member -- ClubMember 기본키
-		PRIMARY KEY (
-			email, -- 이메일
-			id,    -- 아이디
-			kind   -- 구분
-		);
-
 -- SocialPerson
 CREATE TABLE SocialPerson (
 	email    VARCHAR(40) NOT NULL, -- 이메일

@@ -5,33 +5,22 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.namoo.club.dao.factory.DaoFactory.DbType;
-import com.namoo.club.dao.jdbc.MariaDBDaoFactory;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.namoo.club.domain.entity.SocialPerson;
 import com.namoo.club.shared.DbCommonTest;
 
 public class SocialPersonDaoTest extends DbCommonTest {
-
+	//
+	private static final String DATASET_XML = "/SocialPersonDaoTest_dataset.xml";
+	
+	@Autowired
 	private SocialPersonDao dao;
 
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		dao = MariaDBDaoFactory.createFactory(DbType.MariaDB).getSocialPersonDao();
-	
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		//
-		super.tearDown();
-	}
-
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testReadAllPerson() {
 		//
 		List<SocialPerson> persons = dao.readAllPerson();
@@ -39,6 +28,7 @@ public class SocialPersonDaoTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testReadPerson() {
 		//
 		SocialPerson person = dao.readPerson("ksy5350@nate.com");
@@ -46,6 +36,7 @@ public class SocialPersonDaoTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testCreatePerson() {
 		
 		SocialPerson person = new SocialPerson();
@@ -58,6 +49,7 @@ public class SocialPersonDaoTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testDeletePerson() {
 		//
 		dao.deletePerson("ksy5350@nate.com");
@@ -65,6 +57,7 @@ public class SocialPersonDaoTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testUpdatePerson() {
 		//
 		SocialPerson person = dao.readPerson("ksy5350@nate.com");

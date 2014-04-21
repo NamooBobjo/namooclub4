@@ -5,34 +5,23 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.namoo.club.dao.factory.DaoFactory.DbType;
-import com.namoo.club.dao.jdbc.MariaDBDaoFactory;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.namoo.club.domain.entity.Category;
 import com.namoo.club.domain.entity.Club;
 import com.namoo.club.shared.DbCommonTest;
 
 public class ClubDaoTest extends DbCommonTest {
-
+	//
+	private static final String DATASET_XML = "/ClubDaoTest_dataset.xml";
+	
+	@Autowired
 	private ClubDao dao;
 
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		dao = MariaDBDaoFactory.createFactory(DbType.MariaDB).getClubDao();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		//
-		super.tearDown();
-	}
-
-	
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testReadAllClub() {
 		//
 		List<Club> clubs = dao.readAllClub();
@@ -41,6 +30,7 @@ public class ClubDaoTest extends DbCommonTest {
 		}
 	
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testReadAllClubByCmId() {
 		//
 		List<Club> clubs = dao.readAllClub(1);
@@ -49,12 +39,15 @@ public class ClubDaoTest extends DbCommonTest {
 
 	
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testReadClub() {
 		//
 		Club club = dao.readClub(1);
 		assertEquals("한식", club.getName());
 	}
+	
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testReadClubByName() {
 		//
 		Club club = dao.readClubByName("한식");
@@ -62,6 +55,7 @@ public class ClubDaoTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testCreateClub() {
 
 		Club club = new Club();
@@ -80,6 +74,7 @@ public class ClubDaoTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testDeleteClub() {
 
 		dao.deleteClub(1);
@@ -87,6 +82,7 @@ public class ClubDaoTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testUpdateClub() {
 		//
 		Club club = dao.readClub(1);
@@ -96,5 +92,4 @@ public class ClubDaoTest extends DbCommonTest {
 		club = dao.readClub(1);
 		assertEquals("양식", club.getName());
 	}
-
 }
