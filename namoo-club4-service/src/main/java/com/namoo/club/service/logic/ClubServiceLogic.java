@@ -3,13 +3,14 @@ package com.namoo.club.service.logic;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.namoo.club.dao.ClubDao;
 import com.namoo.club.dao.CommunityCategoryDao;
 import com.namoo.club.dao.CommunityDao;
 import com.namoo.club.dao.MemberDao;
 import com.namoo.club.dao.SocialPersonDao;
-import com.namoo.club.dao.factory.DaoFactory;
-import com.namoo.club.dao.factory.DaoFactory.DbType;
 import com.namoo.club.domain.entity.Category;
 import com.namoo.club.domain.entity.Club;
 import com.namoo.club.domain.entity.ClubMember;
@@ -18,23 +19,17 @@ import com.namoo.club.service.facade.ClubService;
 import com.namoo.club.service.logic.exception.NamooExceptionFactory;
 
 
-
+@Service
 public class ClubServiceLogic implements ClubService {
 
+	@Autowired
 	private ClubDao clubDao; 
 	private SocialPersonDao socialdao;
 	private MemberDao memberdao;
 	private CommunityDao communitydao;
 	private CommunityCategoryDao categorydao;
 			
-	public ClubServiceLogic() {
-		clubDao = DaoFactory.createFactory(DbType. MariaDB).getClubDao();
-		socialdao = DaoFactory.createFactory(DbType.MariaDB).getSocialPersonDao();
-		memberdao = DaoFactory.createFactory(DbType.MariaDB).getMemberDao();
-		communitydao = DaoFactory.createFactory(DbType.MariaDB).getCommunityDao();
-		categorydao = DaoFactory.createFactory(DbType.MariaDB).getCommunityCategoryDao();
-	}
-
+	
 	private boolean isExistClubByName(int cmId, String clubName) {
 		// 
 		List<Club> clubs = clubDao.readAllClub(cmId);

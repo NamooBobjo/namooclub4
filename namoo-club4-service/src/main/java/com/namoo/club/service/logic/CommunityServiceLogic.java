@@ -2,12 +2,13 @@ package com.namoo.club.service.logic;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.namoo.club.dao.CommunityCategoryDao;
 import com.namoo.club.dao.CommunityDao;
 import com.namoo.club.dao.MemberDao;
 import com.namoo.club.dao.SocialPersonDao;
-import com.namoo.club.dao.factory.DaoFactory;
-import com.namoo.club.dao.factory.DaoFactory.DbType;
 import com.namoo.club.domain.entity.Category;
 import com.namoo.club.domain.entity.Community;
 import com.namoo.club.domain.entity.CommunityMember;
@@ -15,21 +16,16 @@ import com.namoo.club.domain.entity.SocialPerson;
 import com.namoo.club.service.facade.CommunityService;
 import com.namoo.club.service.logic.exception.NamooExceptionFactory;
 
+@Service
 public class CommunityServiceLogic implements CommunityService {
 
+	@Autowired
 	private CommunityDao communityDao;
 	private SocialPersonDao personDao;
 	private MemberDao memberDao;
 	private CommunityCategoryDao categoryDao;
 	
-	public CommunityServiceLogic() {
-		//
-		communityDao = DaoFactory.createFactory(DbType.MariaDB).getCommunityDao();
-		personDao = DaoFactory.createFactory(DbType.MariaDB).getSocialPersonDao();
-		memberDao = DaoFactory.createFactory(DbType.MariaDB).getMemberDao();
-		categoryDao = DaoFactory.createFactory(DbType.MariaDB).getCommunityCategoryDao();
-	}
-	
+		
 	private boolean isExistCommunityByName(String communityName) {
 		//
 		for(Community community : communityDao.readAllCommunity()){
