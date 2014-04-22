@@ -5,35 +5,24 @@ import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.namoo.club.domain.entity.Category;
 import com.namoo.club.domain.entity.Club;
 import com.namoo.club.domain.entity.ClubMember;
-import com.namoo.club.service.logic.ClubServiceLogic;
 import com.namoo.club.shared.DbCommonTest;
 
 public class ClubServiceTest extends DbCommonTest{
-
+	//
+	private static final String DATASET_XML = "ClubServiceTest_dataset.xml";
+	
+	@Autowired
 	private ClubService service;
 	
-	@Before
-	public void setUp() throws Exception {
-		//
-		super.setUp();
-		service = new ClubServiceLogic();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		//
-		super.tearDown();
-
-	}
-
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testRegistClub() {
 		int communityId = 1;
 		String clubName = "New Club";
@@ -43,12 +32,10 @@ public class ClubServiceTest extends DbCommonTest{
 		category.setName("a");
 		
 		service.registClub(communityId, category, clubName, description, email);
-		
-		// 
-		
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindClubString() {
 		//
 		Club club = service.findClub("한식");
@@ -56,12 +43,14 @@ public class ClubServiceTest extends DbCommonTest{
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindClubInt() {
 		Club club = service.findClub(1);
 		assertEquals("한식", club.getName());
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testJoinAsMemberIntStringStringString() {
 		
 		int clubId = 1;
@@ -77,6 +66,7 @@ public class ClubServiceTest extends DbCommonTest{
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testJoinAsMemberIntString() {
 		
 		int clubId = 1;
@@ -88,6 +78,7 @@ public class ClubServiceTest extends DbCommonTest{
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindAllClubs() {
 		//
 		List<Club> clubs = service.findAllClubs();
@@ -96,6 +87,7 @@ public class ClubServiceTest extends DbCommonTest{
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindClubMember() {
 		
 		int clid = 1;
@@ -107,37 +99,37 @@ public class ClubServiceTest extends DbCommonTest{
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindClubsById() {
 		
 		int id = 1;
 		List<Club> clubs =service.findClubsById(id);
 		
 		assertEquals(2, clubs.size());
-		
-		
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindAllClubMember() {
 		
 		int clid = 1;
 		List<ClubMember> clubMembers = service.findAllClubMember(clid); 
 		
 		assertEquals(1, clubMembers.size());
-		
-	
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testCountMembers() {
 		
-		int clid = 1;
+	int clid = 1;
 	 service.countMembers(clid);	
 	 
 	 assertEquals(1, service.countMembers(clid));
 	}	
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testRemoveClub() {
 		
 		int clid = 1;
@@ -158,6 +150,7 @@ public class ClubServiceTest extends DbCommonTest{
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindManagedClub() {
 		
 		String email= "jjj@nate.com";
@@ -168,6 +161,7 @@ public class ClubServiceTest extends DbCommonTest{
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testWithdrawalClub() {
 		
 		service.withdrawalClub(1,"jjj@nate.com");

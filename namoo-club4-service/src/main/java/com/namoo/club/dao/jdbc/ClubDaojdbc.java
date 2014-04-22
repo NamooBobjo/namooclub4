@@ -56,6 +56,41 @@ public class ClubDaojdbc extends JdbcDaoTemplate implements ClubDao {
 		
 		return clubs;
 	}
+	
+	@Override
+	public List<Club> readManagedClubs(int communityId, String email) {
+		//
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet resultSet = null;
+		List<Club> clubs = new ArrayList<>();
+		
+		try {
+			conn = dataSource.getConnection();
+			String sql = "SELECT a.clid, a.cmId, a.cgId, a.clName, a.clDescription, a.clDate, b.cgName FROM club a " +
+					"INNER JOIN communityCategory b ON a.cgId = b.cgId " +
+					"INNER JOIN member c ON a.clid = c.id " +
+					"WHERE a.cmId = ? AND c.kind = 2 AND c.manager = '1' AND c.email = ? ";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, communityId);
+			pstmt.setString(2, email);
+			
+			resultSet = pstmt.executeQuery();
+			
+			while(resultSet.next()){
+				clubs.add(convertToClub(resultSet));
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw NamooExceptionFactory.createRuntime("관리중인 클럽목록조회 중 오류가 발생하였습니다.");
+		}finally{
+			closeQuietly(resultSet, pstmt, conn);
+		}
+		
+		return clubs;
+	}
 
 	@Override
 	public Club readClub(int clubId) {

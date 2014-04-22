@@ -8,10 +8,11 @@ public interface ClubDao {
 	
 	List<Club> readAllClub();
 	List<Club> readAllClub(int cmid);
+	List<Club> readManagedClubs(int cmId, String email);
+	
 	Club readClub(int clid);
     Club readClubByName(String clName);
 	Integer createClub(Club club);
 	void deleteClub(int clid);
 	void updateClub(Club club);
-
 }

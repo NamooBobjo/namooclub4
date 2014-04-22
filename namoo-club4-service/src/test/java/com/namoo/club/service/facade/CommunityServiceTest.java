@@ -5,32 +5,24 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.namoo.club.domain.entity.Category;
 import com.namoo.club.domain.entity.Community;
 import com.namoo.club.domain.entity.CommunityMember;
-import com.namoo.club.service.logic.CommunityServiceLogic;
 import com.namoo.club.shared.DbCommonTest;
 
 public class CommunityServiceTest extends DbCommonTest {
+	//
+	private static final String DATASET_XML = "CommunityServiceTest_dataset.xml";
 	
+	@Autowired
 	private CommunityService service;
 	
-	@Before
-	public void setUp() throws Exception {
-		super.setUp();
-		service = new CommunityServiceLogic();
-	}
-
-	@After
-	public void tearDown() throws Exception {
-		super.tearDown();
-	}
-
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testRegistCommunity_InCategory() {
 		//
 		String communityName = "세계요리 커뮤니티";
@@ -47,6 +39,7 @@ public class CommunityServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testJoinAsMember_firstJoin() {
 		//
 		int communityid = 1;
@@ -60,6 +53,7 @@ public class CommunityServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testJoinAsMember() {
 		//
 		int communityId = 1;
@@ -72,6 +66,7 @@ public class CommunityServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindAllCommunities() {
 		int count = service.findAllCommunities().size();
 		
@@ -79,6 +74,7 @@ public class CommunityServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindCommunityMember() {
 		//
 		int communityId = 1;
@@ -89,6 +85,7 @@ public class CommunityServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindAllCommunityMembers() {
 		int communityId = 1;
 		int count = service.findAllCommunityMember(communityId).size();
@@ -97,6 +94,7 @@ public class CommunityServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testCountMembers() {
 		//
 		int communityId = 1;
@@ -106,6 +104,7 @@ public class CommunityServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testRemoveCommunity() {
 		//
 		int communityId = 1;
@@ -115,6 +114,7 @@ public class CommunityServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindJoinedCommunities() {
 		//
 		String email = "jjj@nate.com";
@@ -124,6 +124,7 @@ public class CommunityServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindAllUnjoinedCommunities() {
 		String email = "jjj@nate.com";
 		int count = service.findAllUnjoinedCommunities(email).size();
@@ -132,6 +133,7 @@ public class CommunityServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindManagedCommnities() {
 		String email = "jjj@nate.com";
 		int count = service.findManagedCommnities(email).size();
@@ -140,6 +142,7 @@ public class CommunityServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testWithdrawalCommunity() {
 		int communityId = 1;
 		String email = "jjj@nate.com";

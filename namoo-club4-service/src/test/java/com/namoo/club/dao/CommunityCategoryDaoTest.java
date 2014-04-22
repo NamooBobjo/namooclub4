@@ -14,7 +14,7 @@ import com.namoo.club.shared.DbCommonTest;
 
 public class CommunityCategoryDaoTest extends DbCommonTest {
 	//
-	private static final String DATASET_XML = "/CommunityCategoryDaoTest_dataset.xml";
+	private static final String DATASET_XML = "CommunityCategoryDaoTest_dataset.xml";
 	
 	@Autowired
 	private CommunityCategoryDao dao;

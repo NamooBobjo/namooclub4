@@ -1,50 +1,38 @@
 package com.namoo.club.service.facade;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.security.Provider.Service;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import com.namoo.club.dao.CommunityDao;
-import com.namoo.club.dao.SocialPersonDao;
-import com.namoo.club.dao.factory.DaoFactory;
-import com.namoo.club.dao.factory.DaoFactory.DbType;
+import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.namoo.club.domain.entity.SocialPerson;
-import com.namoo.club.service.logic.TownerServiceLogic;
 import com.namoo.club.service.logic.exception.NamooRuntimeException;
 import com.namoo.club.shared.DbCommonTest;
 
 public class TownerServiceTest extends DbCommonTest {
 	//
+	private static final String DATASET_XML = "TownerServiceTest_dataset.xml";
+	
+	@Autowired
 	private TownerService townerService;
 	
-	@Before
-	public void setUp() throws Exception {
-		//
-		super.setUp();
-		this.townerService = new TownerServiceLogic();
-	}	
-
-	@After
-	public void tearDown() throws Exception {
-		//
-		super.tearDown();
-	}
-
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testLoginAsTowner() {
 		//
 		assertFalse(townerService.loginAsTowner("aa", "gggg"));
 		assertTrue(townerService.loginAsTowner("sss@nate.com", "1234"));
 		
 	}
-	
 
 	@Test(expected=NamooRuntimeException.class)
+	@DatabaseSetup(DATASET_XML)
 	public void testRegistTownerWithException() {
 		//
 		String name = "정효진";
@@ -54,8 +42,8 @@ public class TownerServiceTest extends DbCommonTest {
 		townerService.registTowner(name, email, password);
 	}
 	
-	
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testRegistTowner() {
 		//
 		String name = "정효진";
@@ -73,12 +61,14 @@ public class TownerServiceTest extends DbCommonTest {
 	}
 	
 	@Test(expected=NamooRuntimeException.class)
+	@DatabaseSetup(DATASET_XML)
 	public void testRemoveTownerWithException() {
 		// 커뮤니티의 회원으로 가입된 경우 삭제하지 못한다.
 		townerService.removeTowner("jjj@nate.com");
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testRemoveTowner() {
 		//
 		String email = "ksy5350@nate.com";
@@ -88,6 +78,7 @@ public class TownerServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindTowner() {
 		//
 		SocialPerson towner = townerService.findTowner("ksy5350@nate.com");
@@ -95,6 +86,7 @@ public class TownerServiceTest extends DbCommonTest {
 	}
 
 	@Test
+	@DatabaseSetup(DATASET_XML)
 	public void testFindAllTowner() {
 		//
 		List<SocialPerson> persons = townerService.findAllTowner();

@@ -15,7 +15,7 @@ import com.namoo.club.shared.DbCommonTest;
 
 public class ClubDaoTest extends DbCommonTest {
 	//
-	private static final String DATASET_XML = "/ClubDaoTest_dataset.xml";
+	private static final String DATASET_XML = "ClubDaoTest_dataset.xml";
 	
 	@Autowired
 	private ClubDao dao;
@@ -37,6 +37,16 @@ public class ClubDaoTest extends DbCommonTest {
 		assertEquals(2,clubs.size());		
 	}
 
+	@Test
+	@DatabaseSetup(DATASET_XML)
+	public void testReadManagedClubs() {
+		//
+		int cmId = 1;
+		String email = "sss@nate.com";
+		List<Club> clubs = dao.readManagedClubs(cmId, email);
+		
+		assertEquals(1, clubs.size());
+	}
 	
 	@Test
 	@DatabaseSetup(DATASET_XML)

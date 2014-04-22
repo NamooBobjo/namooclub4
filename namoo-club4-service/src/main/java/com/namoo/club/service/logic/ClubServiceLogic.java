@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.namoo.club.dao.ClubDao;
-import com.namoo.club.dao.CommunityCategoryDao;
-import com.namoo.club.dao.CommunityDao;
 import com.namoo.club.dao.MemberDao;
 import com.namoo.club.dao.SocialPersonDao;
 import com.namoo.club.domain.entity.Category;
@@ -24,23 +22,12 @@ public class ClubServiceLogic implements ClubService {
 
 	@Autowired
 	private ClubDao clubDao; 
-	private SocialPersonDao socialdao;
-	private MemberDao memberdao;
-	private CommunityDao communitydao;
-	private CommunityCategoryDao categorydao;
-			
-	
-	private boolean isExistClubByName(int cmId, String clubName) {
-		// 
-		List<Club> clubs = clubDao.readAllClub(cmId);
-		for(Club club : clubs){
-			if(club.getName().equals(clubName)){
-				return true;
-			}
-		}		
-		return false;
-	}
 
+	@Autowired
+	private SocialPersonDao socialdao;
+
+	@Autowired
+	private MemberDao memberdao;
 
 	private SocialPerson createPerson(String name, String email,
 			String password) {
@@ -160,13 +147,9 @@ public class ClubServiceLogic implements ClubService {
 	}
 
 	@Override
-	public int countMembers(int clid) {
+	public int countMembers(int clubId) {
 		//
-		Club club =clubDao.readClub(clid);
-		if (club != null) {
-			return club.getMembers().size();
-		}
-		return 0;
+		return memberdao.readClubMembers(clubId).size();
 	}
 
 	@Override
@@ -202,16 +185,9 @@ public class ClubServiceLogic implements ClubService {
 	@Override
 	public List<Club> findManagedClub(int cmId, String email) {
 		//
-		List<Club> clubs = clubDao.readAllClub(cmId);
-		if (clubs == null) return null;
+		List<Club> clubs = clubDao.readManagedClubs(cmId, email);
 		
-		List<Club> manages = new ArrayList<>();
-		for (Club club : clubs) {
-			if (club.getManager().getEmail().equals(email) && club.getCmid() == cmId) {
-				manages.add(club);
-			}
-		}
-		return manages;
+		return clubs;
 	}
 
 	@Override

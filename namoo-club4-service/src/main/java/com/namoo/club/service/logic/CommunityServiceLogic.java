@@ -21,11 +21,16 @@ public class CommunityServiceLogic implements CommunityService {
 
 	@Autowired
 	private CommunityDao communityDao;
+	
+	@Autowired
 	private SocialPersonDao personDao;
+	
+	@Autowired
 	private MemberDao memberDao;
+	
+	@Autowired
 	private CommunityCategoryDao categoryDao;
 	
-		
 	private boolean isExistCommunityByName(String communityName) {
 		//
 		for(Community community : communityDao.readAllCommunity()){
