@@ -4,12 +4,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.namoo.club.domain.entity.SocialPerson;
 import com.namoo.club.service.facade.TownerService;
+import com.namoo.club.service.logic.exception.NamooExceptionFactory;
 import com.namoo.club.web.session.SessionManager;
 
 @Controller
@@ -58,14 +61,50 @@ public class LoginController{
 			@RequestParam("userPS") String userPS,
 			HttpServletRequest req){
 		//
-		//로그인 된 경우
-		if(townerService.loginAsTowner(userID, userPS)){
+		SessionManager sessionManager = SessionManager.getInstance(req);
+		if(sessionManager.login(userID, userPS)){
+			//로그인 된 경우
 			return "redirect:/community/main";
 		}
-		
-		//로그인 되지 않은 경우		
 		else{
-			return "common/error";
+			//로그인 되지 않은 경우
+			return "user/error";
 		}
+	}
+	
+	@RequestMapping(value="withdraw", method=RequestMethod.GET)
+	public String withdraw(
+			@RequestParam("email") String email,
+			HttpServletRequest req,
+			Model model){
+		
+		SocialPerson person= townerService.findTowner(email);
+		String userName = person.getName();
+		model.addAttribute("userName", userName);
+		
+		return "user/withdraw";
+	}
+	
+	@RequestMapping(value="withdraw", method=RequestMethod.POST)
+	public String doWithdraw(
+			@RequestParam("email") String email,
+			@RequestParam("password") String password,
+			HttpServletRequest req){
+		
+		if (!townerService.findTowner(email).getPassword().equals(password)) {
+			throw NamooExceptionFactory.createRuntime("패스워드를 확인해 주세요.");
+		}
+		
+		townerService.removeTowner(email);//삭제
+		
+		return "redirect:/user/init";
+	}
+	
+	@RequestMapping(value="/logout", method=RequestMethod.GET)
+	public String logout(HttpServletRequest req){
+		//
+		req.removeAttribute("loginID");
+		
+		return "user/init";
 	}
 }
