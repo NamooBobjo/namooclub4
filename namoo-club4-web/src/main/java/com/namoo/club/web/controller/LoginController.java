@@ -51,4 +51,21 @@ public class LoginController{
 		
 		return "redirect:/user/init";
 	}
+	
+	@RequestMapping(value="/login", method=RequestMethod.POST)
+	public String login(
+			@RequestParam("userID") String userID,
+			@RequestParam("userPS") String userPS,
+			HttpServletRequest req){
+		//
+		//로그인 된 경우
+		if(townerService.loginAsTowner(userID, userPS)){
+			return "redirect:/community/main";
+		}
+		
+		//로그인 되지 않은 경우		
+		else{
+			return "common/error";
+		}
+	}
 }
