@@ -42,7 +42,7 @@ public class CommunityController {
 		List<Community> joinedCommunities = communityService.findJoinedCommunities(loginID);
 		mav.addObject("joinedCommunities", joinedCommunities);
 		
-		List<Community> managedCommunities = communityService.findManagedCommnities(loginID);
+		List<Community> managedCommunities = communityService.findManagedCommunities(loginID);
 		mav.addObject("managedCommunities", managedCommunities);
 		
 		mav.setViewName("community/home");

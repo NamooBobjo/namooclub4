@@ -116,7 +116,7 @@ public interface CommunityService {
 	 * @param email
 	 * @return
 	 */
-	public List<Community> findManagedCommnities(String email);
+	public List<Community> findManagedCommunities(String email);
 
 	/**
 	 * 커뮤니티에서 탈퇴하기

@@ -76,7 +76,7 @@ body{
 
 		<!-- form -->
 		
-		<form class = "form-signin" action="login.do" method = "post" name = "myform" onSubmit = "return sendit();">
+		<form class = "form-signin" action="${ctx}/login/login" method = "post" name = "myform" onSubmit = "return sendit();">
 			<input type="text" class="form-control" name = "userID" id="inputEmail" placeholder="아이디" required> 
 			<input type="password"class="form-control" name = "userPS" id="inputPassword" placeholder="비밀번호" required>
 			<label class="checkbox">

@@ -39,7 +39,7 @@
 
             <div class="well">
                 <p>아래 질문 내용들을 정성껏 작성해 주세요.</p>
-                <form class="form-horizontal" action="${ctx}/community/cmjoin?cmId=${cmId}" method = "post">
+                <form class="form-horizontal" action="${ctx}/community/cmjoin?cmId=${cmId}&clId=${clId}" method = "post">
                     <fieldset>
                         <div class="form-group">
                             <label class="col-lg-2 control-label">커뮤니티 가입 목적은 무엇입니까?</label>

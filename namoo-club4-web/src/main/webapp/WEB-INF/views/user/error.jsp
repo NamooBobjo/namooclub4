@@ -69,7 +69,7 @@
         <p>아이디와 패스워드를 확인하세요.</p>
 
         <div class="row error-btn">
-            <button class="btn btn-large btn-default" onclick = "location.href ='init' ">홈으로 이동</button>
+            <button class="btn btn-large btn-default" onclick = "location.href ='${ctx}/user/init' ">홈으로 이동</button>
         </div>
     </div>
 
@@ -78,10 +78,6 @@
         <p>© NamooSori 2014.</p>
     </div>
 </div>
-
-	<script src="resources/common/js/jquery-2.1.0.js"></script>
-	<script src="resources/common/js/bootstrap.min.js"></script>
-	<script src="resources/common/js/bootswatch.js"></script>
 </body>
 
 </html>

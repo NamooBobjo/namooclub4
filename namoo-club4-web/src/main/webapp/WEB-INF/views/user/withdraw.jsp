@@ -11,9 +11,9 @@
 	<div class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-collapse collapse navbar-responsive-collapse">
-			<font color="lightblue">${userName}님 환영합니다~!</font>
+			<font color="lightblue">${loginTowner.name}님 환영합니다~!</font>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="../logout.do">로그아웃</a></li>
+					<li><a href="${ctx}/login/logout.do">로그아웃</a></li>
 					
 					 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">설정 <b class="caret"></b></a>
@@ -36,18 +36,16 @@
 				</div>
 				<div class="well">
 					<p>정말 커뮤니티의 회원을 탈퇴하시겠습니까?</p>
-					<form class="form-horizontal"
-						action="withdraw.do" method="post">
+					<form class="form-horizontal" action="${ctx}/user/withdraw" method="post">
 						<fieldset>
 							<div class="form-group">
 								<div class="col-lg-10">
-									이름 : <input type="text" class="form-control" name="userName"
-										value="${userName}" disabled>
+									이름 : <input type="text" class="form-control" value="${loginTowner.name}" disabled />
 								</div>
 							</div>
 							<div class="form-group">
 								<div class="col-lg-10">
-									비밀번호 : <input type="text" class="form-control" name="password"  placeholder="비밀번호">
+									비밀번호 : <input type="text" class="form-control" name="password"  placeholder="비밀번호" />
 								</div>
 							</div>
 							<div class="form-group">

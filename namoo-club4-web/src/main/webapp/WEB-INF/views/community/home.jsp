@@ -19,11 +19,9 @@
 			
                 <li class="active"><a href="#">커뮤니티 홈</a></li>
                 <li><a href="#">인기 커뮤니티</a></li>
-                <li><a href="#">랭킹</a></li>
                 <li><a href="#">공지사항</a></li>
             
-				
-					<li><a href="logout.do">로그아웃</a></li>
+					<li><a href="${ctx}/login/logout.do">로그아웃</a></li>
 
 					<li class="dropdown"><a href="#" class="dropdown-toggle"  data-toggle="dropdown">설정 <b class="caret"></b></a>
 						<ul class="dropdown-menu">
@@ -48,7 +46,6 @@
 		</div>
 	</div>
 
-
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
@@ -61,8 +58,6 @@
 						<a href="#unjoined" data-toggle="tab">미가입 커뮤니티</a></li>
 					</ul>
 
-
-
 					<div class="tab-pane fade active in" id="joined">
 						<div class="page-header">
 							<h2 id="container">가입 커뮤니티</h2>
@@ -72,14 +67,13 @@
 								<li class="list-group-item"><span class="badge">
 								 <fmt:formatDate	value="${community.openDate}" pattern="yyyy-MM-dd" /></span> 
 											<span class="label label-info">관리</span>
-									<h4><a href = "clList.xhtml?cmId=${community.id}">${community.name} (클럽 수 :${community.clubs.size()}개 , 회원 수 : ${community.members.size()})</a></h4> <span class="badge"><a	href='cmRemove.xhtml?cmId=${community.id}'>
+									<h4><a href = "clList.xhtml?cmId=${community.id}">${community.name} (클럽 수 :${community.clubs.size()}개 , 회원 수 : ${community.members.size()})</a></h4> <span class="badge"><a href='cmRemove.xhtml?cmId=${community.id}'>
 									<font color="black">삭제</font></a></span>
 									<p>${community.description }</p>
 								</li>
 							</c:forEach>
 
 							<c:forEach var="community" items="${joinedCommunities}" 	varStatus="list">
-
 								<li class="list-group-item"><span class="badge">
 								<fmt:formatDate value="${community.openDate}" pattern="yyyy-MM-dd" /></span>
 									<h4><a href = "clList.xhtml?cmId=${community.id}">${community.name} (클럽 수 :${community.clubs.size()}개 , 회원 수 : ${community.members.size()})</a> </h4>
@@ -88,7 +82,6 @@
 										onclick="location.href='withdraw.xhtml?cmId=${community.id}'">멤버탈퇴</button>
 								</li>
 							</c:forEach>
-							
 						</ul>
 					</div>
 
@@ -123,8 +116,7 @@
 			<div class="col-lg-12">
 				<ul class="list-unstyled">
 					<li class="pull-right"><a href="#top">위로 이동</a></li>
-					<li><a href="cmList.xhtml">커뮤니티 홈</a></li>
-					<li><a href="user/withdraw.xhtml">회원탈퇴</a></li>
+					<li><a href="${ctx}/user/withdraw?email=${loginTowner.email}"  >회원탈퇴</a></li>
 				</ul>
 				<p>© NamooSori 2014.</p>
 			</div>
@@ -132,8 +124,6 @@
 		</footer>
 
 	</div>
-
-
 
 </body>
 </html>

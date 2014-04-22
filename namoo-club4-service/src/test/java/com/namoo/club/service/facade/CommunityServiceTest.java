@@ -136,7 +136,7 @@ public class CommunityServiceTest extends DbCommonTest {
 	@DatabaseSetup(DATASET_XML)
 	public void testFindManagedCommnities() {
 		String email = "jjj@nate.com";
-		int count = service.findManagedCommnities(email).size();
+		int count = service.findManagedCommunities(email).size();
 		
 		assertEquals(1, count);
 	}

@@ -164,7 +164,7 @@ public class CommunityServiceLogic implements CommunityService {
 	}
 
 	@Override
-	public List<Community> findManagedCommnities(String email) {
+	public List<Community> findManagedCommunities(String email) {
 		// 
 		return communityDao.readManagedCommunities(email);
 	}
