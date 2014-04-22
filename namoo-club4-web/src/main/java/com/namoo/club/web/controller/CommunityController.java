@@ -7,12 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.namoo.club.domain.entity.Category;
 import com.namoo.club.domain.entity.Community;
@@ -60,10 +59,10 @@ public class CommunityController {
 	public String doCommuniyCreate (
 			@RequestParam("cmName") String communityName,
 			@RequestParam("description") String description,
-			@RequestParam("cateogyr") String[] categoryNames,
+			@RequestParam("category") String[] categoryNames,
 			HttpServletRequest req) {
 		//
-		String loginEmail = SessionManager.getInstance(req).getLoginEmail();
+		String loginID = SessionManager.getInstance(req).getLoginEmail();
 		
 		List<Category> categories = new ArrayList<>();
 
@@ -74,12 +73,72 @@ public class CommunityController {
 			}
 		}
 
-		communityService.registCommunity(communityName, description, loginEmail, categories);
+		communityService.registCommunity(communityName, description, loginID, categories);
 		
 		//return new RedirectView("community/main", true);
 		return "redirect:/community/main";
 	}
 	
 	
-}
+	@RequestMapping(value="cmjoin", method= RequestMethod.GET)
+	public String joinCommunity(
+			@RequestParam("cmId") int communityId, 
+			Model model,
+			HttpServletRequest req) {
+		//
+		Community community = communityService.findCommunity(communityId);
+		String cmName = community.getName();
+		
+		model.addAttribute("cmId", communityId);
+		model.addAttribute("cmName", cmName);
+		
+		
+		return "community/join";
+	}
 	
+	@RequestMapping(value="cmjoin", method=RequestMethod.POST)
+	public String doCommunityJoin (
+			@RequestParam("cmId") int communityId,
+			HttpServletRequest req) {
+		//
+		String loginID = SessionManager.getInstance(req).getLoginEmail();
+		communityService.joinAsMember(communityId, loginID);
+		
+		return "redirect:/community/main";
+	}
+	
+	@RequestMapping(value="cmwithdraw", method=RequestMethod.GET)
+	public String withdrawCommunity() {
+		//
+		return "community/withdraw";
+	}
+	
+	@RequestMapping(value="cmwithdraw", method=RequestMethod.POST)
+	public String doWithdrawCommunity(
+			@RequestParam("cmId") int communityId, 
+			HttpServletRequest req) {
+		//
+		String loginID = SessionManager.getInstance(req).getLoginEmail();
+			communityService.withdrawalCommunity(communityId, loginID);
+			
+			return "redirect:/community/main";
+	
+	}
+	
+	@RequestMapping(value="cmremove", method=RequestMethod.GET)
+	public String CommunityRemove () {
+		//
+		return "community/remove";
+	}
+	
+	public String doCommunityRemove (
+			@RequestParam("cmId") int communityId) {
+		
+		communityService.removeCommunity(communityId);
+		
+		return "redirect:/community/main";
+		
+	}
+			
+	
+}

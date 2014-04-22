@@ -11,7 +11,7 @@ import com.namoo.club.service.facade.TownerService;
 
 public class SessionManager {
 	//
-	private static final String LOGIN_USER = "loginUser";
+	private static final String LOGIN_Towner = "loginTowner";
 
 	private HttpSession session;
 
@@ -29,7 +29,7 @@ public class SessionManager {
 
 	public boolean isLogin() {
 		//
-		return (session.getAttribute(LOGIN_USER) != null) ? true : false;
+		return (session.getAttribute(LOGIN_Towner) != null) ? true : false;
 	}
 
 	public boolean login(String email, String password) {
@@ -39,7 +39,8 @@ public class SessionManager {
 		
 		if (townerService.loginAsTowner(email, password)) {
 			SocialPerson loginTowner = townerService.findTowner(email);
-			session.setAttribute(LOGIN_USER, loginTowner);
+			session.setAttribute(LOGIN_Towner, loginTowner);
+			session.setAttribute("loginUser", loginTowner.getName());
 			return true;
 		} else {
 			session.invalidate();
@@ -55,7 +56,7 @@ public class SessionManager {
 	public String getLoginEmail() {
 		// 
 		if (isLogin()) {
-			SocialPerson loginTowner = (SocialPerson) session.getAttribute(LOGIN_USER);
+			SocialPerson loginTowner = (SocialPerson) session.getAttribute(LOGIN_Towner);
 			return loginTowner.getEmail();
 		}
 		return null;
@@ -64,7 +65,7 @@ public class SessionManager {
 	public String getLoginPassword() {
 		// 
 		if (isLogin()) {
-			SocialPerson loginTowner = (SocialPerson) session.getAttribute(LOGIN_USER);
+			SocialPerson loginTowner = (SocialPerson) session.getAttribute(LOGIN_Towner);
 			return loginTowner.getPassword();
 		}
 		return null;
