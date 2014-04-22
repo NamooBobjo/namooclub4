@@ -60,4 +60,13 @@ public class SessionManager {
 		}
 		return null;
 	}
+	
+	public String getLoginPassword() {
+		// 
+		if (isLogin()) {
+			SocialPerson loginTowner = (SocialPerson) session.getAttribute(LOGIN_USER);
+			return loginTowner.getPassword();
+		}
+		return null;
+	}
 }

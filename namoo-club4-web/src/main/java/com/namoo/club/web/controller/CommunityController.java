@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -44,22 +43,4 @@ public class CommunityController {
 		mav.setViewName("community/home");
 		return mav;
 	}
-	
-	@RequestMapping(value = "/main2")
-	public String communityList2(HttpServletRequest req, Model model) {
-		//
-		String loginEmail = SessionManager.getInstance(req).getLoginEmail();
-		
-		List<Community> unjoinedCommunities = communityService.findAllUnjoinedCommunities(loginEmail);
-		model.addAttribute("unjoinedCommunities", unjoinedCommunities);
-		
-		List<Community> joinedCommunities = communityService.findJoinedCommunities(loginEmail);
-		model.addAttribute("joinedCommunities", joinedCommunities);
-		
-		List<Community> managedCommunities = communityService.findManagedCommnities(loginEmail);
-		model.addAttribute("managedCommunities", managedCommunities);
-		
-		return "community/home";
-	}
-	
 }
