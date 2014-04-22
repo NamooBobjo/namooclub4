@@ -99,7 +99,7 @@ body{
 	</div>
 	<script>
 	function joinPage() { 
-	    location.href = "view/user/join.xhtml";
+	    location.href = "regist";
 	    return false;
 	}
 	

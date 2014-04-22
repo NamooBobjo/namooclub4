@@ -5,10 +5,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.namoo.club.service.facade.TownerService;
-import com.namoo.club.service.logic.exception.NamooExceptionFactory;
 import com.namoo.club.web.session.SessionManager;
 
 @Controller
@@ -17,24 +18,6 @@ public class LoginController{
 	//	
 	@Autowired
 	private TownerService townerService;
-	
-	@RequestMapping("/doWithdraw")
-	public ModelAndView doWithdraw(HttpServletRequest req){
-		
-		String email = SessionManager.getInstance(req).getLoginEmail();
-		String password = SessionManager.getInstance(req).getLoginPassword();
-		
-		ModelAndView mav = new ModelAndView();
-		
-		if (!townerService.findTowner(email).getPassword().equals(password)) {
-			throw NamooExceptionFactory.createRuntime("패스워드를 확인해 주세요.");
-		}
-		
-		townerService.removeTowner(email);//삭제
-		
-		mav.setViewName("user/login");
-		return mav;
-	}
 	
 	@RequestMapping("/init")
 	public ModelAndView init(HttpServletRequest req){
@@ -49,33 +32,23 @@ public class LoginController{
 		return mav;
 	}
 	
-	@RequestMapping("/logout")
-	public ModelAndView logout(HttpServletRequest req){
-		//
-		SessionManager.getInstance(req).logout();
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName("user/join");
-		
-		return mav;
+	@RequestMapping(value="/regist", method=RequestMethod.GET)
+	public String regist(){
+		return "user/join";
 	}
 	
-	@RequestMapping("/login")
-	public ModelAndView login(HttpServletRequest req){
+	@RequestMapping(value="/regist", method=RequestMethod.POST)
+	public String doRegist(
+			@RequestParam("userName") String name,
+			@RequestParam("email") String email,
+			@RequestParam("password") String password,
+			HttpServletRequest req){
 		//
-		String userID = SessionManager.getInstance(req).getLoginEmail();
-		String userPS = SessionManager.getInstance(req).getLoginPassword();
-		
-		ModelAndView mav = new ModelAndView();
-		
-		//로그인 된 경우
-		if(SessionManager.getInstance(req).login(userID, userPS)){
-			mav.setViewName("community/home");
-			return mav;
+		if(name.equals("") || email.equals("")|| password.equals("")){
+			return "redirect:/user/regist";
 		}
-		//로그인 되지 않은 경우		
-		else{
-			mav.setViewName("user/errer");
-			return mav;
-		}
+		townerService.registTowner(name, email, password);
+		
+		return "redirect:/user/init";
 	}
 }
