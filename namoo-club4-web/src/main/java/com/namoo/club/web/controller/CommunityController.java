@@ -111,6 +111,10 @@ public class CommunityController {
 			@RequestParam("cmId") int communityId,
 			Model model) {
 		//
+		Community community = communityService.findCommunity(communityId);
+		String communityName = community.getName();
+		
+		model.addAttribute("cmName", communityName);
 		model.addAttribute("cmId", communityId);
 		
 		return "community/withdraw";

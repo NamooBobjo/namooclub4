@@ -37,7 +37,7 @@
 							<div class="form-group">
 								<div class="col-lg-10">
 									Community Name : <input type="text" class="form-control"
-										name="cmName" value="${loginTowner.name}" disabled>
+										name="cmName" value="${cmName}" disabled>
 								</div>
 							</div>
 							<div class="form-group">
