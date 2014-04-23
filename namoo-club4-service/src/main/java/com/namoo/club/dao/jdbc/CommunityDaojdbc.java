@@ -74,7 +74,7 @@ public class CommunityDaojdbc extends JdbcDaoTemplate implements CommunityDao {
 	public List<Community> readJoinedCommunities(String email) {
 		// 
 		String sql = "SELECT a.cmid, a.cmName, a.cmDescription, a.cmDate FROM community a " +
-				"INNER JOIN member b ON a.cmid = b.id AND b.kind = '1' " +
+				"INNER JOIN member b ON a.cmid = b.id AND b.kind = '1' AND mainManager = '0' " +
 				"WHERE b.email = ?";
 		
 		return readCommunitiesWithSql(sql, email);
@@ -94,7 +94,7 @@ public class CommunityDaojdbc extends JdbcDaoTemplate implements CommunityDao {
 	public List<Community> readUnjoinedCommunities(String email) {
 		// 
 		String sql = "SELECT a.cmid, a.cmName, a.cmDescription, a.cmDate FROM community a " +
-				"WHERE EXISTS(SELECT * FROM member b WHERE a.cmid = b.id AND b.kind = '1' AND b.email != ?)";
+				"WHERE NOT EXISTS(SELECT * FROM member b WHERE a.cmid = b.id AND b.kind = '1' AND b.email = ?)";
 		
 		return readCommunitiesWithSql(sql, email);
 	}

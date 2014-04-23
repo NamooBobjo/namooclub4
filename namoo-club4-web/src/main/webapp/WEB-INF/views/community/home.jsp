@@ -73,13 +73,13 @@
 								</li>
 							</c:forEach>
 
-							<c:forEach var="community" items="${joinedCommunities}" 	varStatus="list">
+							<c:forEach var="community" items="${joinedCommunities}" varStatus="list">
 								<li class="list-group-item"><span class="badge">
 								<fmt:formatDate value="${community.openDate}" pattern="yyyy-MM-dd" /></span>
 									<h4><a href = "clList.xhtml?cmId=${community.id}">${community.name} (클럽 수 :${community.clubs.size()}개 , 회원 수 : ${community.members.size()})</a> </h4>
 									<p>${community.description }</p>
 									<button type="button" class="btn btn-default btn-sm"
-										onclick="location.href='withdraw.xhtml?cmId=${community.id}'">멤버탈퇴</button>
+										onclick="location.href='${ctx}/community/cmwithdraw?cmId=${community.id}'">멤버탈퇴</button>
 								</li>
 							</c:forEach>
 						</ul>

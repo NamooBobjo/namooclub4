@@ -80,7 +80,7 @@ public class CommunityDaoTest extends DbCommonTest{
 	@DatabaseSetup(DATASET_XML)
 	public void testReadJoinedCommunities(){
 		//
-		String email = "jjj@nate.com";
+		String email = "sss@nate.com";
 		List<Community> community = dao.readJoinedCommunities(email);
 		
 		assertEquals(1, community.size());

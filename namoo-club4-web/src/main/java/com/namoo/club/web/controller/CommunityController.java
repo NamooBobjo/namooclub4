@@ -108,8 +108,12 @@ public class CommunityController {
 	}
 	
 	@RequestMapping(value="cmwithdraw", method=RequestMethod.GET)
-	public String withdrawCommunity() {
+	public String withdrawCommunity(
+			@RequestParam("cmId") int communityId,
+			Model model) {
 		//
+		model.addAttribute("cmId", communityId);
+		
 		return "community/withdraw";
 	}
 	
@@ -139,6 +143,4 @@ public class CommunityController {
 		return "redirect:/community/main";
 		
 	}
-			
-	
 }

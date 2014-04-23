@@ -30,12 +30,12 @@
 				<div class="well">
 					<p>정말 커뮤니티를 탈퇴하시겠습니까?</p>
 					 <div class="well">
-					<form class="form-horizontal" action="${ctx}/cmwithdraw.do?cmId=${cmId}" method="post">
+					<form class="form-horizontal" action="${ctx}/community/cmwithdraw?cmId=${cmId}" method="post">
 						<fieldset>
 							<div class="form-group">
 								<div class="col-lg-10">
 									Community Name : <input type="text" class="form-control"
-										name="cmName" value="${cmName}" disabled>
+										name="cmName" value="${loginTowner.name}" disabled>
 								</div>
 							</div>
 							<div class="form-group">

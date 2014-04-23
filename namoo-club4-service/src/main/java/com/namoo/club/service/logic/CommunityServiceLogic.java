@@ -124,7 +124,7 @@ public class CommunityServiceLogic implements CommunityService {
 			throw NamooExceptionFactory.createRuntime("존재하지 않는 주민입니다.");
 		}
 		
-		memberDao.joinAsCommunityMember(findCm.getId(), 1, towner);
+		memberDao.joinAsCommunityMember(findCm.getId(), 0, towner);
 	}
 
 	@Override
