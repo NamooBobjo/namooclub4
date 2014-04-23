@@ -36,28 +36,31 @@ public class ClubController {
 	private ClubService clubService;
 	
 	@RequestMapping(value = "clList")
-	public ModelAndView clubList(Model model, HttpServletRequest req){
+	public ModelAndView clubList(
+			@RequestParam("cmId") int cmId,
+			Model model, HttpServletRequest req){
 	
 		String loginID = SessionManager.getInstance(req).getLoginEmail();
 		ModelAndView mav = new ModelAndView();
 		
-		HttpSession session = req.getSession();
-		String email = (String) session.getAttribute("loginID");
-		int cmId = Integer.parseInt(req.getParameter("cmId"));
-		Community community = communityService.findCommunity(cmId);
-		List<Club> clubs = new ArrayList<>(communityService.findCommunity(cmId).getClubs());
-		List<Club> belongclubs = new ArrayList<>(clubService.findBelongClub(cmId, email));
-		List<Club> managedclubs = new ArrayList<>(clubService.findManagedClub(cmId, email));
+	
 		
+		Community community = communityService.findCommunity(cmId);
+		List<Club> managedclubs = new ArrayList<>(clubService.findManagedClub(cmId, loginID));
+		mav.addObject("managedclubs", managedclubs);
+		
+		List<Club> clubs = new ArrayList<>(communityService.findCommunity(cmId).getClubs());
+				
+		List<Club> belongclubs = new ArrayList<>(clubService.findBelongClub(cmId, loginID));
+			
 		clubs = filter(clubs, belongclubs);
+		mav.addObject("clubs", clubs);
+		
 		belongclubs = filter(belongclubs, managedclubs);
+		mav.addObject("belongclubs", belongclubs);
 		
 		String cmname = community.getName();
-		
-		
-		mav.addObject("managedclubs", managedclubs);
-		mav.addObject("belongclubs", belongclubs);
-		mav.addObject("clubs", clubs);
+				
 		model.addAttribute("cmName",cmname);
 		model.addAttribute("cmId",cmId);	
 		
@@ -88,15 +91,15 @@ public class ClubController {
 			@RequestParam("clName") String clubName,
 			@RequestParam("content") String description,
 			@RequestParam("cmId") String cmid,
-			@RequestParam("category") String categoryName,
+			@RequestParam("category") int categoryID,
 			Model model,
 			HttpServletRequest req
 			){
 	
 		String loginID = SessionManager.getInstance(req).getLoginEmail();
 		int cmId = Integer.parseInt(cmid);
-		Category category = new Category();
-		category.setName(categoryName);
+		Category category = new Category(categoryID, null);
+		
 		
 		Community community =	communityService.findCommunity(cmId);
 		List<Club> clubs = community.getClubs();
@@ -110,14 +113,17 @@ public class ClubController {
 			
 			// 해당카테고리의 클럽이 존재할 경우 
 			if(category.equals(club.getCategory())){				
-				return "redirect:/club/clList";
+				return "redirect:/club/clList?cmId="+cmId;
 			}
 		}				
 		model.addAttribute("category", category);
 		
 		clubService.registClub(cmId, category, clubName, description, loginID);
-		return "redirect:/club/clList";
+		return "redirect:/club/clList?cmId="+cmId;
 	}
+	
+	
+	
 	
 	private List<Club> filter(List<Club> all, List<Club> filters) {
 		//
@@ -135,4 +141,5 @@ public class ClubController {
 		}
 		return all;
 	}
+	
 }

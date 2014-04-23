@@ -37,16 +37,18 @@
 
             <div class="well">
                 <p>나와 같은 관심사를 가진 멤버를 모집하고 열심히 운영하여 클럽을 성장시켜 보세요.</p>
-                <form class="form-horizontal" action="clCreate.do?cmId=${cmId}" method = "post">
+                <form class="form-horizontal" action="clCreate.do" method = "post">
                     <fieldset>
-                    
+                    	<input type="hidden" name="cmId" value="${cmId}" />
+                
                        <div class="form-group">
                             <label class="col-lg-2 control-label">클럽 카테고리</label>
 
                             <div class="col-lg-10">
                                 <select class="form-control" id="select" name = "category">
                                 <c:forEach var="cate" items="${category}" varStatus="list">
-                                    <option>${cate.getName()}</option>
+                                    <option value="${cate.id }">${cate.name}</option>
+                                    
                                     </c:forEach>
                                 </select>
                             </div>
