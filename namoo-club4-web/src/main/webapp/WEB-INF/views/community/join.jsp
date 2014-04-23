@@ -48,21 +48,21 @@
                             <label class="col-lg-2 control-label">커뮤니티 가입 목적은 무엇입니까?</label>
 
                             <div class="col-lg-10">
-                                <input type="text" class="form-control" placeholder="커뮤니티명">
+                                <input type="text" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-lg-2 control-label">과거에 유사 커뮤니티에 가입하신 적이 있으시면 과거 활동을 적어 주세요.</label>
 
                             <div class="col-lg-10">
-                                <input type="text" class="form-control" placeholder="커뮤니티명">
+                                <input type="text" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="textArea" class="col-lg-2 control-label">커뮤니티 운영자에게 하고 싶은 말씀은 무엇인가요?</label>
 
                             <div class="col-lg-10">
-                                <textarea class="form-control" rows="3" id="textArea"></textarea>
+                                <textarea class="form-control" rows="3" id="textArea" ></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -71,6 +71,7 @@
                                 <button class="btn btn-default" onclick = "cancelPage(); return false;">취소</button>
                             </div>
                         </div>
+                        <input type="hidden" class="form-control" name="cmId" />
                     </fieldset>
                 </form>
             </div>

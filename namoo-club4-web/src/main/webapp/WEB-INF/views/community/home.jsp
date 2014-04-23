@@ -68,7 +68,7 @@
 						<ul class="list-group">
 							<c:forEach var="community" items="${managedCommunities}" varStatus="list">
 								<li class="list-group-item"><span class="badge">
-								 <fmt:formatDate	value="${community.openDate}" pattern="yyyy-MM-dd" /></span> 
+								 <fmt:formatDate value="${community.openDate}" pattern="yyyy-MM-dd" /></span> 
 											<span class="label label-info">관리</span>
 									<h4><a href = "${ctx}/club/clList?cmId=${community.id}">${community.name} (클럽 수 :${community.clubs.size()}개 , 회원 수 : ${community.members.size()})</a></h4> <span class="badge"><a href='${ctx}/community/cmremove?cmId=${community.id}'>
 									<font color="black">삭제</font></a></span>

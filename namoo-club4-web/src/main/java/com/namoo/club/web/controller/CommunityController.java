@@ -37,17 +37,30 @@ public class CommunityController {
 		
 		List<Community> unjoinedCommunities = communityService.findAllUnjoinedCommunities(loginID);
 		mav.addObject("unjoinedCommunities", unjoinedCommunities);
+		mav.addObject("unjoinedCommunityMembers", fill(unjoinedCommunities));
 		
 		List<Community> joinedCommunities = communityService.findJoinedCommunities(loginID);
 		mav.addObject("joinedCommunities", joinedCommunities);
+		mav.addObject("joinedCommunityMembers", fill(joinedCommunities));
 		
 		List<Community> managedCommunities = communityService.findManagedCommunities(loginID);
 		mav.addObject("managedCommunities", managedCommunities);
+		mav.addObject("managedCommunityMembers", fill(managedCommunities));
 		
 		mav.setViewName("community/home");
 		return mav;
 	}
 	
+	private int fill(List<Community> communities) {
+		// 
+		for (Community community : communities) {
+			community.setMembers(communityService.findAllCommunityMember(community.getId()));
+			return community.getMembers().size();
+		}
+		
+		return 0;
+	}
+
 	@RequestMapping(value="cmcreate", method= RequestMethod.GET)
 	public String communityCreate() {
 		//
