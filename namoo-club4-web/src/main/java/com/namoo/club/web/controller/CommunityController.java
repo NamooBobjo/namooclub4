@@ -28,7 +28,6 @@ public class CommunityController {
 	@Autowired
 	private TownerService townerService;
 	
-	
 	@RequestMapping(value = "/main")
 	public ModelAndView communityList(HttpServletRequest req) {
 		//
@@ -123,24 +122,32 @@ public class CommunityController {
 			HttpServletRequest req) {
 		//
 		String loginID = SessionManager.getInstance(req).getLoginEmail();
-			communityService.withdrawalCommunity(communityId, loginID);
+		communityService.withdrawalCommunity(communityId, loginID);
 			
-			return "redirect:/community/main";
-	
+		return "redirect:/community/main";
 	}
 	
 	@RequestMapping(value="cmremove", method=RequestMethod.GET)
-	public String CommunityRemove () {
+	public String CommunityRemove (
+			@RequestParam("cmId") int communityId,
+			Model model) {
 		//
+		Community community = communityService.findCommunity(communityId);
+		String communityName = community.getName();
+		
+		model.addAttribute("cmName", communityName);
+		model.addAttribute("cmId", communityId);
+		
 		return "community/remove";
 	}
 	
+	@RequestMapping(value="cmremove", method=RequestMethod.POST)
 	public String doCommunityRemove (
 			@RequestParam("cmId") int communityId) {
+		
 		
 		communityService.removeCommunity(communityId);
 		
 		return "redirect:/community/main";
-		
 	}
 }

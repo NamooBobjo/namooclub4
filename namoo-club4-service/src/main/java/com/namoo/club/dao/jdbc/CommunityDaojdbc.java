@@ -231,8 +231,7 @@ public class CommunityDaojdbc extends JdbcDaoTemplate implements CommunityDao {
 			
 			pstmt.setInt(1, cmId);
 			
-			int count = pstmt.executeUpdate();
-			System.out.println(count);
+			pstmt.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

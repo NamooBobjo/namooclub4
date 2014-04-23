@@ -20,6 +20,9 @@ import com.namoo.club.service.logic.exception.NamooExceptionFactory;
 public class CommunityServiceLogic implements CommunityService {
 
 	@Autowired
+	private CommunityCategoryDao communityCategoryDao;
+	
+	@Autowired
 	private CommunityDao communityDao;
 	
 	@Autowired
@@ -148,6 +151,7 @@ public class CommunityServiceLogic implements CommunityService {
 	@Override
 	public void removeCommunity(int communityId) {
 		// 
+		communityCategoryDao.deleteCategory(communityId);
 		communityDao.deleteCommunity(communityId);
 	}
 

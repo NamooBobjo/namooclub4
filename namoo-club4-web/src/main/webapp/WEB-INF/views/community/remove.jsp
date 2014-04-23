@@ -14,9 +14,9 @@
 <div class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-collapse collapse navbar-responsive-collapse">
-				<font color="lightblue">${loginUser}님 환영합니다~!</font>
+				<font color="lightblue">${loginTowner.name}님 환영합니다~!</font>
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="../logout.do">로그아웃</a></li>
+					<li><a href="${ctx}/login/logout.do">로그아웃</a></li>
               
             </ul>
         </div>
@@ -33,7 +33,7 @@
             </div>
  			<p>정말로 커뮤니티를 삭제하시겠습니까?</p>
             <div class="well">
-                <form class="form-horizontal" action="remove.do?cmId=${cmId}" method = "post">
+                <form class="form-horizontal" action="${ctx}/community/cmremove?cmId=${cmId}" method = "post">
                    <fieldset>
 							<div class="form-group">
 								<div class="col-lg-10">
