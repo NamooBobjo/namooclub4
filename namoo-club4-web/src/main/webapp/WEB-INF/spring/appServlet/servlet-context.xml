@@ -23,5 +23,9 @@
 	
 	<context:component-scan base-package="com.namoo.club.web.controller" />
 	
+	<!-- Interceptor -->
+	<interceptors>
+	<beans:bean class="com.namoo.club.web.interceptor.LoginInterceptor"/>
+	</interceptors>
 	
 </beans:beans>
